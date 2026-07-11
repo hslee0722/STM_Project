@@ -1,3 +1,20 @@
+<!-- ======================= HEADER ======================= -->
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:1E9BD7,100:F25C8E&height=200&section=header&text=Pill-O-Clock&fontSize=64&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=STM32%20기반%20스마트%20알약%20자동%20디스펜서&descSize=20&descAlignY=60&descColor=ffe1ee" width="100%"/>
+
+**설정한 시간·요일에 맞춰 약을 자동으로 배출하는 복약 관리 디스펜서**
+
+![STM32](https://img.shields.io/badge/STM32-03234B?style=flat-square&logo=stmicroelectronics&logoColor=white)
+![C](https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=white)
+![No HAL](https://img.shields.io/badge/Bare--metal%20C%20%C2%B7%20No%20HAL-444B5A?style=flat-square)
+![App Inventor](https://img.shields.io/badge/MIT%20App%20Inventor-A5CF47?style=flat-square)
+![Fusion 360](https://img.shields.io/badge/Fusion%20360%20%C2%B7%203D%20Print-FF7A1A?style=flat-square&logo=autodesk&logoColor=white)
+
+</div>
+
+---
+
 # 💊 STM32 스마트 알약 자동 디스펜서 (Pill-O'Clock)
 
 > RTC 알람과 상태 머신을 중심으로 센서·모터·LCD·블루투스를 통합한 STM32 기반 스마트 복약 자동화 시스템
