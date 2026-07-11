@@ -3,7 +3,7 @@
 > RTC 알람과 상태 머신을 중심으로 센서·모터·LCD·블루투스를 통합한 STM32 기반 스마트 복약 자동화 시스템
 
 
-### 📸
+## 📸
 <p float="left">
   <img src="docs/20260410_153818.jpg" width="270">
   <img src="docs/20260410_152700.jpg" width="270">
@@ -11,7 +11,7 @@
 </p>
 
 
-### 🎬 
+## 🎬 
 [![시연 영상](docs/demo.png)](https://drive.google.com/file/d/1TFuWnTdDnE3eIXkkwW_EUmXIQnwxQKjm/view?usp=sharing)
 
 
@@ -49,7 +49,7 @@
 | 개발 기간 | 2026년 4월 |
 | 팀 구성 | 4명 |
 | 개발 환경 | STM32 · C언어 (레지스터 직접 제어, HAL 미사용) |
-| 주요 기술 | RTC 알람, PWM 모터 제어, UART 통신, 초음파 센서, I2C LCD, 블루투스 통신(HC-06) |
+| 주요 기술 | RTC 알람, PWM 모터 제어, UART 통신, 초음파 센서, I2C LCD, 블루투스 통신(HC-06), App Inventor |
 
 ---
 
