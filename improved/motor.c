@@ -5,7 +5,8 @@ extern uint32_t Get_Tick(void);
 volatile int s1_target = 0, s1_curr = 0; uint32_t s1_last = 0;
 volatile int s2_target = 0, s2_curr = 0; uint32_t s2_last = 0;
 volatile int servo_step = 0; uint32_t servo_last = 0;
-volatile int rotate_done_pending = 0;
+volatile int dispense_servo_pending = 0;
+volatile int conveyor_start_pending = 0;
 
 void Motor_Init(void)
 {
@@ -66,10 +67,8 @@ void Stepper2_Step(int step_num)
     GPIOC->ODR = temp;
 }
 
-void Rotate_Next_Slot_Async(void) {
-    s1_target += 1141;
-    rotate_done_pending = 1;   
-}
+void Rotate_Next_Slot_Async(void) { s1_target += 1141; }
+void Dispense_Rotate_Async(void)  { s1_target += 1141; dispense_servo_pending = 1; }
 void Supply_Pill_Async(void)      { s2_target += 1141; }
 void Stepper2_One_Day_Async(void) { s2_target += 2290; }
 void Servo_Open_Close_Async(void) { if (servo_step == 0) { servo_step = 1; servo_last = Get_Tick(); } }
@@ -82,18 +81,22 @@ void Motor_Update_Task(void)
         if (now - s1_last >= 4) { s1_last = now; Stepper_Step(s1_curr++); }
     } else {
         GPIOC->ODR &= ~(0xF << 0);
-        // ★ 회전이 방금 끝났고, 서보 예약이 있으면 지금 서보 시작
-        if (rotate_done_pending) {
-            rotate_done_pending = 0;
-            Servo_Open_Close_Async();   // 이제서야 문 열기 시작
+        if (dispense_servo_pending) {
+            dispense_servo_pending = 0;
+            Servo_Open_Close_Async();
         }
     }
     switch (servo_step) {
-        case 1: TIM3->CCR1 = 1400; if (now - servo_last >= 500)  { servo_step = 2; servo_last = now; } break;
+        case 1: TIM3->CCR1 = 1400; if (now - servo_last >= 500)  { servo_step = 2; servo_last = now; conveyor_start_pending = 1; } break;
         case 2:                    if (now - servo_last >= 2000) { servo_step = 3; servo_last = now; } break;
         case 3: TIM3->CCR1 = 2000; if (now - servo_last >= 500)  { servo_step = 4; servo_last = now; } break;
         case 4: TIM3->CCR1 = 0; servo_step = 0; break;
     }
+}
+
+int Motor_All_Idle(void)
+{
+    return (s1_curr >= s1_target && s2_curr >= s2_target && servo_step == 0);
 }
 
 #define MOTOR_STOP 0
