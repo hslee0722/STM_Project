@@ -144,6 +144,7 @@ void Main(void)
 
     while (1) {
         IWDG_Refresh();
+        Key_Update();
         Motor_Update_Task();
 
         Handle_Uart1_Command();
