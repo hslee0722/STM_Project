@@ -77,6 +77,8 @@ void Uart1_Printf(char *fmt, ...)
 volatile char uart1_buffer[64];
 static int uart1_rx_index = 0;
 volatile int uart1_rx_exist = 0;
+volatile char uart2_buffer[64];
+volatile int  uart2_rx_exist = 0;
 
 void USART1_IRQHandler(void)
 {
