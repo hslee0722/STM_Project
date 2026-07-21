@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 
+static void Wait_Motor_Done(void);
+
 #define LCD1_ADDR 0x4E
 #define LCD2_ADDR 0x4C
 
@@ -49,15 +51,22 @@ static void Auto_Load_Sequence(const char *week_data)
         LCD_Set_Cursor_To(LCD2_ADDR, 1, 0);
         LCD_String_To(LCD2_ADDR, lcd_buf);
 
+        Rotate_Next_Slot_Async();
+        Wait_Motor_Done();
+
         if (week_data[i] == '1') {
             Status_LED_Red();
             Supply_Pill_Async();
-            Delay_ms(1500);
-            IWDG_Refresh();
+            Wait_Motor_Done();
+            Status_LED_All_Off();
         }
-        Status_LED_All_Off();
-        Stepper2_One_Day_Async();
-        Delay_ms(1500);
+    }
+}
+
+static void Wait_Motor_Done(void)
+{
+    while (!Motor_All_Idle()) {
+        Motor_Update_Task();
         IWDG_Refresh();
     }
 }
@@ -65,9 +74,8 @@ static void Auto_Load_Sequence(const char *week_data)
 static void Handle_Pill_Alarm(void)
 {
     Status_LED_Red();
-    Rotate_Next_Slot_Async();   
+    Dispense_Rotate_Async();
     pill_alarm_flag = 0;
-    Conveyor_Start();
 }
 
 static void Handle_Command(const char *buf)
@@ -151,6 +159,11 @@ void Main(void)
 
         if (pill_alarm_flag == 1) {
             Handle_Pill_Alarm();
+        }
+
+        if (conveyor_start_pending == 1) {
+            conveyor_start_pending = 0;
+            Conveyor_Start();
         }
 
         if (Get_Tick() - last_sensor_time >= 100) {
