@@ -19,4 +19,8 @@ extern volatile int  uart1_rx_exist;
 extern volatile char uart2_buffer[64];
 extern volatile int  uart2_rx_exist;
 
+extern volatile int conveyor_start_pending;
+extern void Dispense_Rotate_Async(void);
+extern int  Motor_All_Idle(void);
+
 #endif
