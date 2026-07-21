@@ -65,8 +65,7 @@ static void Auto_Load_Sequence(const char *week_data)
 static void Handle_Pill_Alarm(void)
 {
     Status_LED_Red();
-    Rotate_Next_Slot_Async();
-    Servo_Open_Close_Async();
+    Rotate_Next_Slot_Async();   
     pill_alarm_flag = 0;
     Conveyor_Start();
 }
