@@ -45,6 +45,8 @@ void Conveyor_Update(int dist)
                 Stop();
                 Buzzer_On();
                 Status_LED_All_Off();
+                /* 이동 중에 눌린 버튼이 도착 즉시 소비되지 않도록 폐기 */
+                Key_Clear_Event();
                 current_state = STATE_WAIT;
             }
             break;
@@ -64,6 +66,7 @@ void Conveyor_Update(int dist)
                 Stop();
                 Buzzer_Off();
                 Status_LED_All_Off();
+                /* 슬롯을 먼저 돌리고, 회전이 끝난 뒤 호퍼가 다음 약을 보충한다 */
                 Rotate_Then_Supply_Async();
                 current_state = STATE_FINISHED;
             }
