@@ -1,47 +1,45 @@
 #include "device_driver.h"
+#include "pin_map.h"
 
-// 외부 상태 표시용 LED 6개 초기화 (PB12~15, PA7~8)
+/*
+ * 상태 표시 LED (Active Low : ODR=0 점등 / ODR=1 소등)
+ *   RED   : 약 공급 · 복귀 등 "진행 중"
+ *   GREEN : 수동 배출 · 컨베이어 전진 시작
+ */
 void Status_LED_Init(void)
 {
-    // GPIOA, GPIOB 클럭 켜기 (0번 비트, 1번 비트)
-    Macro_Set_Bit(RCC->AHB1ENR, 0);
-    Macro_Set_Bit(RCC->AHB1ENR, 1);
+    Macro_Set_Bit(RCC->AHB1ENR, PIN_STATUS_RED_RCC_BIT);
+    Macro_Set_Bit(RCC->AHB1ENR, PIN_STATUS_GRN_RCC_BIT);
 
-    // PB12 Output 모드 설정  제외PB13, PB14, PB15
-    Macro_Write_Block(GPIOB->MODER, 0x3, 0x1, 12 * 2);
-    Macro_Clear_Bit(GPIOB->OTYPER, 12);                  // Push-Pull
-    Macro_Write_Block(GPIOB->OSPEEDR, 0x3, 0x2, 12 * 2); // Fast speed
-    Macro_Set_Bit(GPIOB->ODR, 12);                     // 초기 상태: 끄기
+    Macro_Write_Block(PIN_STATUS_RED_PORT->MODER, 0x3, 0x1,
+                      PIN_POS2(PIN_STATUS_RED_NUM));
+    Macro_Clear_Bit(PIN_STATUS_RED_PORT->OTYPER, PIN_STATUS_RED_NUM);
+    Macro_Write_Block(PIN_STATUS_RED_PORT->OSPEEDR, 0x3, 0x2,
+                      PIN_POS2(PIN_STATUS_RED_NUM));
 
-    // PA7 Output 모드 설정
-    Macro_Write_Block(GPIOA->MODER, 0x3, 0x1, 7 * 2);
-    Macro_Clear_Bit(GPIOA->OTYPER, 7);                  // Push-Pull
-    Macro_Write_Block(GPIOA->OSPEEDR, 0x3, 0x2, 7 * 2); // Fast speed
-    Macro_Set_Bit(GPIOA->ODR, 7);                     // 초기 상태: 끄기
+    Macro_Write_Block(PIN_STATUS_GRN_PORT->MODER, 0x3, 0x1,
+                      PIN_POS2(PIN_STATUS_GRN_NUM));
+    Macro_Clear_Bit(PIN_STATUS_GRN_PORT->OTYPER, PIN_STATUS_GRN_NUM);
+    Macro_Write_Block(PIN_STATUS_GRN_PORT->OSPEEDR, 0x3, 0x2,
+                      PIN_POS2(PIN_STATUS_GRN_NUM));
+
+    Status_LED_All_Off();
 }
 
-// 모든 LED 끄기
 void Status_LED_All_Off(void)
 {
-    // PB12  끄기
-    Macro_Set_Bit(GPIOB->ODR, 12);
-
-    // PA7, 끄기
-    Macro_Set_Bit(GPIOA->ODR, 7);
+    Macro_Set_Bit(PIN_STATUS_RED_PORT->ODR, PIN_STATUS_RED_NUM);
+    Macro_Set_Bit(PIN_STATUS_GRN_PORT->ODR, PIN_STATUS_GRN_NUM);
 }
 
-// 빨간색 2개 켜기 (PB12, PB13)
 void Status_LED_Red(void)
 {
     Status_LED_All_Off();
-    Macro_Clear_Bit(GPIOB->ODR, 12);
-    // Macro_Set_Bit(GPIOB->ODR, 13);
+    Macro_Clear_Bit(PIN_STATUS_RED_PORT->ODR, PIN_STATUS_RED_NUM);
 }
 
-
-// 초록색 4개 켜기 (PA7, PA8)
 void Status_LED_Green(void)
 {
     Status_LED_All_Off();
-    Macro_Clear_Bit(GPIOA->ODR, 7);
+    Macro_Clear_Bit(PIN_STATUS_GRN_PORT->ODR, PIN_STATUS_GRN_NUM);
 }
