@@ -64,8 +64,7 @@ void Conveyor_Update(int dist)
                 Stop();
                 Buzzer_Off();
                 Status_LED_All_Off();
-                Rotate_Next_Slot_Async();
-                Supply_Pill_Async();
+                Rotate_Then_Supply_Async();
                 current_state = STATE_FINISHED;
             }
             break;
