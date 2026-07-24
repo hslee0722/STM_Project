@@ -41,12 +41,10 @@ extern void Clock_Init(void);
 
 // Key.c
 
-extern void Key_Poll_Init(void);
-extern int Key_Get_Pressed(void);
-extern void Key_Wait_Key_Released(void);
-extern void Key_Wait_Key_Pressed(void);
-extern void Key_ISR_Enable(int);
+extern void Key_Init(void);
 extern void Key_Update(void);
+extern int  Key_Get_Pressed(void);
+extern void Key_Clear_Event(void);
 
 // Timer.c
 
@@ -68,6 +66,7 @@ extern void Stop(void);
 extern void Move_CW(void);
 extern void Move_CCW(void);
 extern void Rotate_Next_Slot_Async(void);
+extern void Rotate_Then_Supply_Async(void);
 extern void Stepper_Step(int);
 extern void Servo_Open_Close_Async(void);
 extern void Motor_Set_Percent(unsigned int percent);
