@@ -2,7 +2,7 @@
 #define RTC_CALIBRATION_H
 
 #ifndef RTC_CALIB_DAILY_ERROR_SEC
-#define RTC_CALIB_DAILY_ERROR_SEC   0.0f
+#define RTC_CALIB_DAILY_ERROR_SEC   1.3f
 #endif
 
 int RTC_SmoothCalib_Set(int calp, int calm);
