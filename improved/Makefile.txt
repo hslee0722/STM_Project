@@ -1,6 +1,6 @@
 # Tool information
-TOOL_DIR		= C:\arm-gnu-toolchain-15.2.rel1-mingw-w64-i686-arm-none-eabi
-VERSION			= 15.2.1
+TOOL_DIR		?= C:\arm-gnu-toolchain-15.2.rel1-mingw-w64-i686-arm-none-eabi
+VERSION			?= 15.2.1
 TARGET			= arm-none-eabi
 
 # Project name & Link script
@@ -61,4 +61,4 @@ clean :
 	rm -f $(DUMP)
 
 flash: # for STM32CubeProgrammer
-	STM32_Programmer_CLI.exe -c port=SWD -w ./rom_0x08000000.elf -v -rst -q	
+	STM32_Programmer_CLI.exe -c port=SWD -w ./rom_0x08000000.elf -v -rst -q
