@@ -132,7 +132,8 @@ void Motor_Update_Task(void)
 
 int Motor_All_Idle(void)
 {
-    return (s1_curr >= s1_target && s2_curr >= s2_target && servo_step == 0);
+    return (s1_curr >= s1_target && s2_curr >= s2_target && servo_step == 0
+            && !dispense_servo_pending && !supply_after_slot_pending);
 }
 
 #define MOTOR_STOP 0
