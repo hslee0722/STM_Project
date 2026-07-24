@@ -4,13 +4,14 @@
 #include "command_parser.h"
 #include "nvic_config.h"
 #include "iwdg.h"
+#include "rtc_calibration.h"
+#include "pin_map.h"
 #include <stdio.h>
 #include <string.h>
 
 static void Wait_Motor_Done(void);
 
-#define LCD1_ADDR 0x4E
-#define LCD2_ADDR 0x4C
+/* LCD1_ADDR / LCD2_ADDR 는 pin_map.h 에서 관리 */
 
 volatile int system_mode = 0;
 volatile int pill_alarm_flag = 0;
@@ -33,7 +34,7 @@ static void Sys_Init(void)
     LCD_Init();
     LCD_Init_To(LCD2_ADDR);
     Ultrasonic_Init();
-    Key_Poll_Init();
+    Key_Init();
     Buzzer_Init();
     Uart2_RX_Interrupt_Enable();
 
@@ -135,6 +136,10 @@ void Main(void)
 {
     Sys_Init();
     RTC_Init_And_Alarm_Set(0, 0, 0);
+
+    /* LSE 오차 보정. 실측값은 rtc_calibration.h 의 RTC_CALIB_DAILY_ERROR_SEC 에서 설정 */
+    RTC_Calibration_From_Daily_Error(RTC_CALIB_DAILY_ERROR_SEC);
+
     IWDG_Init();
 
     uint32_t last_sensor_time = 0;
