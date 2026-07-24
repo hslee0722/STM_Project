@@ -11,7 +11,7 @@
 
 static void Wait_Motor_Done(void);
 
-/* LCD1_ADDR / LCD2_ADDR 는 pin_map.h 에서 관리 */
+/* LCD1_ADDR / LCD2_ADDR 는 pin_map.h 에서 관리한다. */
 
 volatile int system_mode = 0;
 volatile int pill_alarm_flag = 0;
